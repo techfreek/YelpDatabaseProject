@@ -1,0 +1,24 @@
+<div class="jumbotron">
+	<div class="row">
+		<div class="col-xs-12">
+			<h3>Funniest Reviews</h3>
+		</div>
+	</div>
+</div>
+
+<table class="table tabe-striped">
+	<thead>
+		<td>User</td>
+		<td>Review</td>
+		<td>Stars</td>
+		<td>Date</td>
+		<td>'Cool' Votes</td>
+	</thead>
+	<tr ng-repeat="review in reviews">
+		<td>{{review.user}}</td>
+		<td>{{review.review}}</td>
+		<td>{{review.stars}}</td>
+		<td>{{review.date}}</td>
+		<td>{{review.cool}}</td>
+	</tr>
+</table>
