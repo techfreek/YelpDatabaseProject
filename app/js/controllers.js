@@ -2,8 +2,8 @@
 angular.module('bahmApp.controllers', []).
 
 controller('query1Ctrl', ['$scope', '$http', 
-	function() {
-
+	function($scope) {
+		$scope.categories = ["All Categories"]
 	}
 ]).
 controller('query2Ctrl', ['$scope', '$http', 
@@ -12,13 +12,13 @@ controller('query2Ctrl', ['$scope', '$http',
 	}
 ]).
 controller('query3Ctrl', ['$scope', '$http', 
-	function() {
-
+	function($scope) {
+		$scope.businesses = ["Choose a bussines!"]
 	}
 ]).
 controller('query4Ctrl', ['$scope', '$http', 
-	function(){
-		
+	function($scope) {
+		$scope.categories = ["All Categories"]
 	}
 ]).
 controller('query5Ctrl', ['$scope', '$http', 
