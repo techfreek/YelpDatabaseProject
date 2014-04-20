@@ -6,7 +6,8 @@ angular.module('bahmApp', [
   'ngRoute',
   'bahmApp.filters',
   'bahmApp.services',
-  'bahmApp.controllers'
+  'bahmApp.controllers',
+  'restangular'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {templateUrl: 'partials/home.html'});
