@@ -7,8 +7,8 @@
 	<div class="row">
 		<div class="col-xs-2">
 			<center><form role="form" class="form-inline">
-				<select class="form-control" ng-repeat="category in categories">
-					<option>{{category}}</option>
+				<select class="form-control" ng-model="selectedCat">
+					<option ng-repeat="category in categories">{{category}}</option>
 				</select>
 				<button type="submit" class="btn btn-default">Submit</button>
 			</form><center>
