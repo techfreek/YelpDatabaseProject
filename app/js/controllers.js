@@ -30,30 +30,32 @@ function query1Ctrl($scope, Restangular) {
 	}
 }
 
-function query2ctrl($scope) {
+function query2Ctrl($scope, Restangular) {
 	$scope.june = function() {
-		Restangular.all('api/q2/june').getList().then(function(res){
+		Restangular.all("api/q2").get("june").then(function(res){
 			$scope.businesses = res;
 		})
 	}
 	$scope.steady = function() {
-		Restangular.all('api/q2/steady').getList().then(function(res){
+		Restangular.all("api/q2").get("steady").then(function(res){
 			$scope.businesses = res;
 		})
 	}
 }
 
-function query3Ctrl($scope) {
+function query3Ctrl($scope, Restangular) {
 	Restangular.all('api/businesses').getList().then(function(res) {
 		$scope.businesses = res;
 	});
-	var body = {"businesses": $scope.selectedBus };
-	Restangular.all('api/q3').get(body).then(function(res) {
-		$scope.reviews = res;	
-	})	
+	$scope.submit = function() {
+		var body = {"businesses": $scope.selectedBus };
+		Restangular.all('api/q3').get(body).then(function(res) {
+			$scope.reviews = res;	
+		})	
+	}
 }
 
-function query4Ctrl($scope) {
+function query4Ctrl($scope, Restangular) {
 	Restangular.all('api/categories').getList().then(function(res) {
 		$scope.categories = res;
 	});
@@ -63,7 +65,7 @@ function query4Ctrl($scope) {
 	});
 	
 }
-function query5Ctrl() {
+function query5Ctrl($scope, Restangular) {
 	Restangular.all('api/q5').getList().then(function(res) {
 		$scope.reviews = res;
 	});

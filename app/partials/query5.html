@@ -12,13 +12,13 @@
 		<td>Review</td>
 		<td>Stars</td>
 		<td>Date</td>
-		<td>'Cool' Votes</td>
+		<td>'Funny' Votes</td>
 	</thead>
-	<tr ng-repeat="review in reviews">
-		<td>{{review.user}}</td>
-		<td>{{review.review}}</td>
+	<tr ng-repeat="review in reviews" style="display:table-row;">
+		<td syle="width: 80px;">{{review.user_name}}</td>
+		<td style="max-width: 200px;">{{review.text}}</td>
 		<td>{{review.stars}}</td>
-		<td>{{review.date}}</td>
-		<td>{{review.cool}}</td>
+		<td>{{review.postDate}}</td>
+		<td>{{review.funny}}</td>
 	</tr>
 </table>

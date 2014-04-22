@@ -29,9 +29,9 @@ exports.categories = function(req, res) {
 }
 
 exports.businesses = function(req, res) {
-		var query = "SELECT DISTINCT business_id from business"
+		var query = "SELECT business_id from yelpproject.business"
 		connection.query(query, function(err, results) {
-
+			console.log("Bid: " + JSON.stringify(results));
 			if(err != null) {
 				res.end("Database Error: " + err);
 			} else {
@@ -89,8 +89,9 @@ exports.q1review = function(req, res) {
 
 exports.q2june = function(req, res) {
 	var query = "";
-	query = "SELECT business_id FROM business as B ORDER BY (" +
+	query = "SELECT business_id FROM yelpproject.business as B ORDER BY (" +
 				"SELECT avg(stars) FROM Review where B.business_id = Review.business_id AND postDate BETWEEN '2011-06-01' AND '2011-06-30' AND business_id = b.business_id)";
+	console.log("June");
 	connection.query(query, function(err, results) {
 		if(err != null) {
 		res.end("Database Error: " + err);
@@ -137,7 +138,7 @@ exports.q4 = function(req, res) {
 }
 
 exports.q5 = function(req, res) {
-	connection.query("SELECT user_id, review, funny FROM Review ORDER BY funny DESC", function(err, results){
+	connection.query("SELECT CONVERT(review USING utf8) as text, user_name, postDate, funny, stars FROM yelpproject.Review ORDER BY funny DESC LIMIT 1000", function(err, results){
 		if(err != null) {
 			res.end("Database Error: " + err);
 		} else {
