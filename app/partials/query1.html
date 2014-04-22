@@ -19,7 +19,7 @@
 		<div class="col-xs-2">
 			<center>
 				<span>
-					<select class="form-control" ng-model="selectedCat" ng-options="f for f in categories">
+					<select class="form-control" ng-model="selectedCat" ng-options="f.categoryName for f in categories" required>
 						<option value="">-- choose value --</option>
 					</select>
 				</span>
@@ -39,10 +39,10 @@
 	</thead>
 	<tr ng-repeat="business in businesses">
 		<td>{{business.name}}</td>
-		<td>{{business.address}}</td>
+		<td>{{business.full_address}}</td>
 		<td>{{business.city}}</td>
 		<td>{{business.stars}}</td>
-		<td>{{business.reviews}}</td>
+		<td>{{business.review_count}}</td>
 		<td>{{business.open}}</td>
 	</tr>
 </table>

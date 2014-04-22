@@ -3,28 +3,30 @@ function query1Ctrl($scope, Restangular) {
 		$scope.categories = res;
 	});
 	var q1 = Restangular.all("api/q1")
-	$scope.categories = ["Something", "Blah", "Youtube", "Twitter"];
+	//$scope.categories = ["Something", "Blah", "Youtube", "Twitter"];
 	var body = {};
 	$scope.rating = function() {
 		body = {"category": $scope.selectedCat };
 		console.log("Rating");
-		q1.get('rating', body).then(function(res){
+		Restangular.one('api/q1/rating', $scope.selectedCat.categoryName).get().then(function(res){
 			$scope.businesses = res;
+			console.log("res: " + res);
 		});
 	}
 	$scope.review = function() {
 		console.log("review");
-		body = {"category": $scope.selectedCat };
-		q1.get('review', body).then(function(res){
+		body = {"param": $scope.selectedCat };
+		console.log("body: " + body);
+		Restangular.one('api/q1/review', $scope.selectedCat.categoryName).get().then(function(res){
 			$scope.businesses = res;
 		})
 	}
 	$scope.geo = function() {
 		console.log("geo");
-		body = {"category": $scope.selectedCat, "lat": $scope.lat, "long": $scope.long};
-		q1.get('geo', body).then(function(res){
+		Restangular.one("api/q1/geo", $scope.selectedCat.categoryName).one("lat", $scope.lat).one("long", $scope.long).get().then(function(res){
 			$scope.businesses = res;
 		})
+		//Modify results to fully filter by 10 mile radius
 	}
 }
 

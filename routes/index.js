@@ -1,12 +1,21 @@
 var mysql = require('mysql');
+var url = require('url');
 
 var connection = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: ""
-})
+	host: 'localhost',
+	port: '3306',
+	user: 'root',
+	password: 'test',
+	database: 'yelpproject'
+});
 
-//connection.connect();
+connection.connect(function(err){
+	if(err) {
+		throw err;
+	} else {
+		console.log('Connected');
+	}
+});
 
 exports.categories = function(req, res) {
 	var query = "SELECT DISTINCT categoryName from category";
@@ -22,6 +31,7 @@ exports.categories = function(req, res) {
 exports.businesses = function(req, res) {
 		var query = "SELECT DISTINCT business_id from business"
 		connection.query(query, function(err, results) {
+
 			if(err != null) {
 				res.end("Database Error: " + err);
 			} else {
@@ -37,9 +47,10 @@ exports.q1geo = function(req, res) {
 	//Check what element of req the data is coming from
 	var qCat = req; //Change to reflect what aspect of the requirement it comes from
 	var query = "";
-	query = "SELECT * FROM business WHERE latitude >= (" + req.lat  + " - 0.1754385965) AND latitude <= ( " + req.lat + 
-		" + 0.1754385965) AND longitude >= (" + req.long + " - 0.1449275362) AND longitude <= (" + req.long + " + 0.1449275362) AND " + req.cat + 
-		" = category"
+	var cat = req.param("cat");
+	var long = req.param("long");
+	var lat = req.param("lat");
+	query = "SELECT * FROM yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND business.latitude >= (" + lat  + " - 0.1754385965) AND business.latitude <= ( " + lat  + "  + 0.1754385965) AND business.longitude >= (" + long + " - 0.1449275362) AND business.longitude <= (" + long + " + 0.1449275362) AND category.categoryName = \"" + cat + "\"";
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);
@@ -50,13 +61,8 @@ exports.q1geo = function(req, res) {
 }
 
 exports.q1rating = function(req, res) {
-	console.log("Req.body: " + JSON.stringify(req.body));
-	console.log("Req.params: " + JSON.stringify(req.params));
-	console.log("Req.query: " + JSON.stringify(req.query));
-	//Check what element of req the data is coming from
-	var qCat = req; //Change to reflect what aspect of the requirement it comes from
-	var query = "";
-	query = "SELECT * from business WHERE category = " + req.category + "ORDER by rating DESC"
+	var cat = req.param("cat");
+	query = "SELECT * from yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND category.categoryName = \"" + cat + "\" ORDER by business.stars DESC"
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);
@@ -67,17 +73,15 @@ exports.q1rating = function(req, res) {
 }
 
 exports.q1review = function(req, res) {
-	console.log("Req.body: " + JSON.stringify(req.body));
-	console.log("Req.params: " + JSON.stringify(req.params));
-	console.log("Req.query: " + JSON.stringify(req.query));
+	console.log("Req.params: " + req.param("cat"));
 	//Check what element of req the data is coming from
-	var qCat = req; //Change to reflect what aspect of the requirement it comes from
-	var query = "";
-	query = "SELECT * from business WHERE category = " + req.category + "ORDER by reviewCount DESC"
+	var cat = req.param("cat");
+	query = "SELECT * from yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND category.categoryName = \"" + cat + "\" ORDER by business.review_count DESC"
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);
 		} else {
+			
 			res.send(results);
 		}
 	});
