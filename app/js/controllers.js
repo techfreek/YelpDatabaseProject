@@ -3,6 +3,8 @@ function query1Ctrl($scope, Restangular) {
 		$scope.categories = res;
 	});
 	var q1 = Restangular.all("api/q1")
+	$scope.lat = "33.666585";
+	$scope.long = "-112.196462";
 	//$scope.categories = ["Something", "Blah", "Youtube", "Twitter"];
 	var body = {};
 	$scope.rating = function() {
