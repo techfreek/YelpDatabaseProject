@@ -15,10 +15,10 @@
 		<td>'Funny' Votes</td>
 	</thead>
 	<tr ng-repeat="review in reviews" style="display:table-row;">
-		<td syle="width: 80px;">{{review.user_name}}</td>
-		<td style="max-width: 200px;">{{review.text}}</td>
+		<td style="max-width: 80px;">{{review.user_name}}</td>
+		<td style="max-width: 500px;">{{review.text}}</td>
 		<td>{{review.stars}}</td>
-		<td>{{review.postDate}}</td>
+		<td style="max-width: 100px;">{{review.postDate}}</td>
 		<td>{{review.funny}}</td>
 	</tr>
 </table>

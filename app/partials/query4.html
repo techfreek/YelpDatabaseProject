@@ -1,17 +1,13 @@
 <div class="jumbotron">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-5">
 			<h3>Find Businesses in a Given Category that has many good reviews</h3>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-2">
-			<center><form role="form" class="form-inline">
-				<select class="form-control" ng-model="selectedCat" ng-options="f.categoryName for f in categories" required>
-						<option value="">-- choose value --</option>
-					</select>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form><center>
+		<div class="col-xs-7">
+			<form role="form" class="form-inline">
+				<select class="form-control" ng-model="selectedCat" ng-options="f.categoryName for f in categories"></select>
+				<button ng-click="submit()" class="btn btn-default">Submit</button>
+			</form>
 		</div>
 	</div>
 </div>
@@ -19,18 +15,8 @@
 <table class="table tabe-striped">
 	<thead>
 		<td>Name</td>
-		<td>Address</td>
-		<td>City</td>
-		<td>Stars</td>
-		<td>Reviews</td>
-		<td>Open</td>
 	</thead>
 	<tr ng-repeat="business in businesses">
 		<td>{{business.name}}</td>
-		<td>{{business.address}}</td>
-		<td>{{business.city}}</td>
-		<td>{{business.stars}}</td>
-		<td>{{business.reviews}}</td>
-		<td>{{business.open}}</td>
 	</tr>
 </table>

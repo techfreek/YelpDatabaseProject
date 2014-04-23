@@ -29,9 +29,8 @@ exports.categories = function(req, res) {
 }
 
 exports.businesses = function(req, res) {
-		var query = "SELECT business_id from yelpproject.business"
+		var query = "SELECT name, business_id from yelpproject.business LIMIT 5000"
 		connection.query(query, function(err, results) {
-			console.log("Bid: " + JSON.stringify(results));
 			if(err != null) {
 				res.end("Database Error: " + err);
 			} else {
@@ -40,58 +39,30 @@ exports.businesses = function(req, res) {
 		});
 }
 
-exports.q1geo = function(req, res) {
-	console.log("Req.body: " + JSON.stringify(req.body));
-	console.log("Req.params: " + JSON.stringify(req.params));
-	console.log("Req.query: " + JSON.stringify(req.query));
-	//Check what element of req the data is coming from
-	var qCat = req; //Change to reflect what aspect of the requirement it comes from
-	var query = "";
+exports.q1 = function(req, res) {
+	var sort = req.param("sort");
 	var cat = req.param("cat");
+	var query = "";
 	var long = req.param("long");
 	var lat = req.param("lat");
-	query = "SELECT * FROM yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND business.latitude >= (" + lat  + " - 0.1754385965) AND business.latitude <= ( " + lat  + "  + 0.1754385965) AND business.longitude >= (" + long + " - 0.1449275362) AND business.longitude <= (" + long + " + 0.1449275362) AND category.categoryName = \"" + cat + "\"";
+	if(sort === "geo") {
+		query = "SELECT * FROM yelpproject.category_business WHERE latitude >= (" + lat  + " - 0.1754385965) AND latitude <= (" + lat  + " + 0.1754385965) AND longitude >= (" + long + " - 0.1449275362) AND longitude <= (" + long + " + 0.1449275362) and categoryName = \"" + cat + "\"";
+	} else if(sort === "rating"){
+		query = "SELECT * FROM yelpproject.category_business WHERE latitude >= (" + lat  + " - 0.1754385965) AND latitude <= (" + lat  + " + 0.1754385965) AND longitude >= (" + long + " - 0.1449275362) AND longitude <= (" + long + " + 0.1449275362) and categoryName = \"" + cat + "\" ORDER BY stars DESC";
+	} else {
+		query = "SELECT * FROM yelpproject.category_business WHERE latitude >= (" + lat  + " - 0.1754385965) AND latitude <= (" + lat  + " + 0.1754385965) AND longitude >= (" + long + " - 0.1449275362) AND longitude <= (" + long + " + 0.1449275362) and categoryName = \"" + cat + "\" ORDER BY review_count DESC";
+	}
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);
 		} else {
-			res.send(results);
-		}
-	});
-}
-
-exports.q1rating = function(req, res) {
-	var cat = req.param("cat");
-	query = "SELECT * from yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND category.categoryName = \"" + cat + "\" ORDER by business.stars DESC"
-	connection.query(query, function(err, results) {
-		if(err != null) {
-			res.end("Database Error: " + err);
-		} else {
-			res.send(results);
-		}
-	});
-}
-
-exports.q1review = function(req, res) {
-	console.log("Req.params: " + req.param("cat"));
-	//Check what element of req the data is coming from
-	var cat = req.param("cat");
-	query = "SELECT * from yelpproject.business, yelpproject.category WHERE business.business_id = category.business_id AND category.categoryName = \"" + cat + "\" ORDER by business.review_count DESC"
-	connection.query(query, function(err, results) {
-		if(err != null) {
-			res.end("Database Error: " + err);
-		} else {
-			
 			res.send(results);
 		}
 	});
 }
 
 exports.q2june = function(req, res) {
-	var query = "";
-	query = "SELECT business_id FROM yelpproject.business as B ORDER BY (" +
-				"SELECT avg(stars) FROM Review where B.business_id = Review.business_id AND postDate BETWEEN '2011-06-01' AND '2011-06-30' AND business_id = b.business_id)";
-	console.log("June");
+	var query = "select business_name, categoryName from yelpproject.bestbusiness where postDate between '2011-06-01' AND '2011-06-30' group by categoryName order by avg (stars) desc";
 	connection.query(query, function(err, results) {
 		if(err != null) {
 		res.end("Database Error: " + err);
@@ -103,7 +74,7 @@ exports.q2june = function(req, res) {
 
 exports.q2steady = function(req, res) {
 	var qCat = req; //Change to reflect what aspect of the requirement it comes from
-	var query = "";
+	var query = "Select business_name, count(*) FROM select business_name, categoryName from yelpproject.bestbusiness where postDate between '2011-06-01' AND '2011-06-30' group by categoryName order by avg (stars) descbestbusiness WHERE (select avg(stars) from bestbusiness where postDate BETWEEN '2012-12-01' AND '2012-12-31' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-11-01' AND '2012-11-30' > (select avg(stars)from bestbusiness where postDate BETWEEN '2012-10-01' AND '2012-10-31' > (select avg(stars)from bestbusiness where postDate BETWEEN '2012-09-01' AND '2012-09-30' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-08-01' AND '2012-08-31' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-07-01' AND '2012-07-30' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-06-01' AND '2012-06-31' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-05-01' AND '2012-05-30' > (select avg(stars)  from bestbusiness where postDate BETWEEN '2012-04-01' AND '2012-04-31' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-03-01' AND '2012-03-30' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-02-01' AND '2012-02-29' > (select avg(stars) from bestbusiness where postDate BETWEEN '2012-01-01' AND '2012-01-31')))))))))))) group by name;";
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);
@@ -114,9 +85,10 @@ exports.q2steady = function(req, res) {
 }
 
 exports.q3 = function(req, res) {
-	var query = "SELECT DISTINCT name, (POWER(stars, 2)*review_count) as weight FROM business, category WHERE categoryName = " + 
-				req.cat + "ORDER BY weight DESC"
+
+	var query = "SELECT distinct CONVERT(review USING utf8) as text, (UNIX_TIMESTAMP(postDate)*SQRT(useful+1)) as weight FROM yelpproject.bestbusiness WHERE business_business_id = \"" + req.param("cat") + "\" ORDER BY weight DESC";
 	connection.query(query, function(err, results) {
+		console.log("Q3 Res: " + results);
 		if(err != null) {
 			res.end("Database Error: " + err);
 		} else {
@@ -126,8 +98,7 @@ exports.q3 = function(req, res) {
 }
 
 exports.q4 = function(req, res) {
-	var query = "SELECT *, (UNIX_TIMESTAMP(postDate)*SQRT(useful+1)) as weight FROM tempReview WHERE tempReview.business_id = " + req.business_id +
-	 			" ORDER BY weight DESC;"
+	var query = "SELECT DISTINCT name, (POWER(stars, 2)*review_count) as weight FROM yelpproject.business, yelpproject.category WHERE categoryName = \"" + req.param("cat") + "\" ORDER BY weight DESC"
 	connection.query(query, function(err, results) {
 		if(err != null) {
 			res.end("Database Error: " + err);

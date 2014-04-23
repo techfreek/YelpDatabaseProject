@@ -1,34 +1,24 @@
 <div class="jumbotron">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-4">
 			<h3>Relevent, Recent Useful Reviews</h3>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-12">
-			<center><form role="form" class="form-inline">
-				<select class="form-control" ng-model="selectedCat">
-					<option ng-repeat="business in businesses">{{business.business_id}}</option>
-				</select>
-				<button type="submit" class="btn btn-default">Submit</button>
-			</form><center>
+		<div class="col-xs-8">
+			<form role="form" class="form-inline">
+				<span>
+					<select class="form-control" ng-model="selectedCat" ng-options="c.name for c in businesses"></select>
+					<button ng-click="submit()" class="btn btn-default">Submit</button>
+				</span>
+			</form>
 		</div>
 	</div>
 </div>
 
 <table class="table tabe-striped">
 	<thead>
-		<td>User</td>
 		<td>Review</td>
-		<td>Stars</td>
-		<td>Date</td>
-		<td>'Cool' Votes</td>
 	</thead>
 	<tr ng-repeat="review in reviews">
-		<td>{{review.user}}</td>
-		<td>{{review.review}}</td>
-		<td>{{review.stars}}</td>
-		<td>{{review.date}}</td>
-		<td>{{review.cool}}</td>
+		<td>{{review.text}}</td>
 	</tr>
 </table>
