@@ -23,6 +23,7 @@ function query1Ctrl($scope, Restangular) {
 						tBus.push($scope.businesses[i]);
 					}
 				}
+				console.log("Res: " + JSON.stringify(res));
 				$scope.businesses = tBus;
 			});
 		}
@@ -80,13 +81,16 @@ function calcDistance(lat1, long1, lat2, long2){
 
 function query2Ctrl($scope, Restangular) {
 	$scope.june = function() {
+		$scope.steadyQuery = false;
 		Restangular.all("api/q2").get("june").then(function(res){
 			$scope.businesses = res;
 		})
 	}
 	$scope.steady = function() {
+		$scope.steadyQuery = true;
 		Restangular.all("api/q2").get("steady").then(function(res){
 			$scope.businesses = res;
+
 		})
 	}
 }

@@ -12,13 +12,13 @@
 	</div>
 </div>
 
-<table class="table tabe-striped">
+<table class="table table-striped">
 	<thead>
-		<td>Category</td>
+		<td ng-hide="steadyQuery">Category</td>
 		<td>Name</td>
 	</thead>
 	<tr ng-repeat="business in businesses">
-		<td>{{business.categoryName}}</td>
-		<td>{{<business class="business_"></business>name}}</td>
+		<td ng-hide="steadyQuery">{{business.categoryName}}</td>
+		<td>{{business.business_name}}</td>
 	</tr>
 </table>
